@@ -11,7 +11,7 @@ import UIKit
 extension UIImageView {
     
     // instance method
-    func setImage(urlString: String, completionHandler: @escaping (Result<UIImage?, AppError>) -> ()) {
+    func getImage(urlString: String, completionHandler: @escaping (Result<UIImage?, AppError>) -> ()) {
         // UIActivityIndicatorView
         
         let activityIndicator = UIActivityIndicatorView(style: .large)
@@ -25,7 +25,6 @@ extension UIImageView {
             DispatchQueue.main.async {
                 activityIndicator?.stopAnimating()
             }
-            
             
             switch result {
             case .failure(let appError):

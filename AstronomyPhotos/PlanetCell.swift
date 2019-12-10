@@ -12,8 +12,15 @@ class PlanetCell: UITableViewCell {
     
     @IBOutlet weak var planetImage: UIImageView!
     
+    // task: make it to stop flickering the images while deque reuseable cells
+    // solution: keep track of image url string by using string variable on the cell
+    
+    private var urlString = ""
+    
     func configureCell(urlString: String) {
-        planetImage.setImage(urlString: urlString) { (result) in
+        self.urlString = urlString
+        
+        planetImage.getImage(urlString: urlString) { (result) in
             switch result {
             case .failure:
                 DispatchQueue.main.async {
@@ -21,9 +28,18 @@ class PlanetCell: UITableViewCell {
                 }
             case .success(let image):
                 DispatchQueue.main.async {
-                    self.planetImage.image = image
+                    // if the cells urlString is the same as one being passed in from the cellforRow
+                    if self.urlString == urlString {
+                        self.planetImage.image = image
+                    }
                 }
             }
         }
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        // empty out image view (nil)
+        planetImage.image = nil 
     }
 }
